@@ -42,7 +42,6 @@ class _HomePageState extends State<HomePage> {
                 onPressed: enabled
                     ? () {
                         deleteUser(model.id);
-                        Navigator.pop(context);
                       }
                     : null,
                 child: const Text('Delete'),
@@ -59,7 +58,6 @@ class _HomePageState extends State<HomePage> {
                 onPressed: enabled
                     ? () {
                         updateUser(model);
-                        Navigator.pop(context);
                       }
                     : null,
                 child: enabled
@@ -123,6 +121,7 @@ class _HomePageState extends State<HomePage> {
               GlobalSnackBar.error(value.message);
             }
             if (value is SavedUserState) {
+              Navigator.pop(context);
               GlobalSnackBar.success('User saved');
             }
           },

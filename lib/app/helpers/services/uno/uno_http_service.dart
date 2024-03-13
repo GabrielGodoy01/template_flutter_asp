@@ -1,8 +1,29 @@
+import 'package:routefly/routefly.dart';
+import 'package:template_flutter_asp/app/helpers/environments/environment_config.dart';
+import 'package:template_flutter_asp/routes.dart';
 import 'package:uno/uno.dart';
 import 'package:template_flutter_asp/app/helpers/services/http_service.dart';
 
 class UnoHttpService extends HttpService {
-  final uno = Uno();
+  final uno = Uno(
+    baseURL: EnvironmentConfig.MSS_BASE_URL,
+  );
+
+  UnoHttpService() {
+    uno.interceptors.request.use(
+      (request) {
+        request.headers['Authorization'] =
+            'Bearer SoanM6sDfT3E_lU5Zp5pFA8eZMJQdCaDIXhiMunE_zXYhXAM8g';
+        return request;
+      },
+      onError: (error) {
+        error.response!.status == 401
+            ? Routefly.navigate(routePaths.splash)
+            : null;
+        return error;
+      },
+    );
+  }
 
   @override
   Future get(String url) {

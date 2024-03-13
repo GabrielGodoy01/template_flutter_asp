@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:template_flutter_asp/app/data/mock_user_repository.dart';
+import 'package:template_flutter_asp/app/data/repositories/mock_user_repository.dart';
 import 'package:template_flutter_asp/app/interactor/models/user_model.dart';
 import 'package:template_flutter_asp/generated/l10n.dart';
 
