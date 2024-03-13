@@ -1,15 +1,22 @@
+import 'dart:ui';
+
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:template_flutter_asp/app/data/mock_user_repository.dart';
+import 'package:template_flutter_asp/app/helpers/functions/global_snackbar.dart';
 import 'package:template_flutter_asp/app/injector.dart';
 import 'package:template_flutter_asp/app/interactor/actions/user_actions.dart';
 import 'package:template_flutter_asp/app/interactor/atoms/user_atom.dart';
 import 'package:template_flutter_asp/app/interactor/models/user_model.dart';
 import 'package:template_flutter_asp/app/interactor/repositories/user_repository.dart';
+import 'package:template_flutter_asp/generated/l10n.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
   late MockUserRepository mockRepository;
 
-  setUpAll(() {
+  setUpAll(() async {
+    await S.load(const Locale.fromSubtags(languageCode: 'en'));
     mockRepository = MockUserRepository();
     injector.add<UserRepository>(() => mockRepository);
   });

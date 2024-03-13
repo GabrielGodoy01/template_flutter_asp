@@ -13,10 +13,15 @@ void main() {
     test('getAll should return a list of users', () async {
       final users = await mockRepository.getAll();
 
-      expect(users.length, equals(3));
-      expect(users[0].id, equals(1));
-      expect(users[0].name, equals('User 1'));
-      expect(users[0].isActive, isTrue);
+      users.fold(
+        (l) => fail(l.message),
+        (r) {
+          expect(r.length, equals(3));
+          expect(r[0].id, equals(1));
+          expect(r[0].name, equals('User 1'));
+          expect(r[0].isActive, isTrue);
+        },
+      );
     });
 
     test('insert should add a new user to the list', () async {
