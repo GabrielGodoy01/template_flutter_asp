@@ -1,27 +1,40 @@
 import 'package:template_flutter_asp/app/injector.dart';
 import 'package:template_flutter_asp/app/interactor/atoms/user_atom.dart';
+import 'package:template_flutter_asp/app/interactor/models/state_model.dart';
 import 'package:template_flutter_asp/app/interactor/models/user_model.dart';
 import 'package:template_flutter_asp/app/interactor/repositories/user_repository.dart';
 
-Future<void> fetchTodos() async {
+Future<void> fetchUsers() async {
   final repository = injector.get<UserRepository>();
-  userState.value = await repository.getAll();
+  setUserState(LoadingState());
+  var result = await repository.getAll();
+  result.fold(
+    (l) => setUserState(ErrorState(errorMessage: l.message)),
+    (r) {
+      listUsersState.value = r;
+      setUserState(SuccessState());
+    },
+  );
 }
 
-Future<void> putTodo(UserModel model) async {
+Future<void> updateUser(UserModel model) async {
   final repository = injector.get<UserRepository>();
-
-  if (model.id == -1) {
-    await repository.insert(model);
-  } else {
-    await repository.update(model);
-  }
-  // reload list
-  fetchTodos();
+  await repository.update(model);
+  await fetchUsers();
 }
 
-Future<void> deleteTodo(int id) async {
+Future<void> insertUser(UserModel model) async {
+  final repository = injector.get<UserRepository>();
+  await repository.insert(model);
+  await fetchUsers();
+}
+
+Future<void> deleteUser(int id) async {
   final repository = injector.get<UserRepository>();
   await repository.delete(id);
-  fetchTodos();
+  await fetchUsers();
+}
+
+void setUserState(State state) {
+  userState.value = state;
 }
