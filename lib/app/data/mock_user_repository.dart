@@ -19,23 +19,29 @@ class MockUserRepository implements UserRepository {
         return Future.value(right(model));
       }
     }
+
     return left(NoItemsFound(message: '${model.id}'));
   }
 
   @override
   Future<Either<Failure, Unit>> delete(int id) async {
+    if (users.every((user) => user.id != id)) {
+      return left(NoItemsFound(message: '$id'));
+    }
     users.removeWhere((user) => user.id == id);
     return right(unit);
   }
 
   @override
   Future<Either<Failure, List<UserModel>>> getAll() async {
-    await Future.delayed(const Duration(seconds: 1));
     return right(users);
   }
 
   @override
   Future<Either<Failure, UserModel>> insert(UserModel model) async {
+    if (users.any((user) => user.id == model.id)) {
+      return left(ErrorRequest(message: '${model.id}'));
+    }
     users.add(model);
     return right(model);
   }

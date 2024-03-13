@@ -1,5 +1,6 @@
 import 'package:asp/asp.dart';
 import 'package:flutter/material.dart';
+import 'package:template_flutter_asp/app/helpers/functions/global_snackbar.dart';
 import 'package:template_flutter_asp/app/interactor/actions/user_actions.dart';
 import 'package:template_flutter_asp/app/interactor/atoms/user_atom.dart';
 import 'package:template_flutter_asp/app/interactor/models/user_model.dart';
@@ -105,23 +106,46 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return RxBuilder(
-      builder: (context) {
-        final state = userState.value;
-
-        return Scaffold(
-          appBar: AppBar(
-            title: const Text('Home Page'),
-          ),
-          body: switch (state) {
-            StartUserState() => const SizedBox(),
-            GettedUserState() => _gettedUsers(state),
-            LoadingUserState() =>
-              const Center(child: CircularProgressIndicator()),
-            FailureUserState() => _failureUserState(state),
+    return RxCallback(
+      effects: [
+        rxObserver(
+          () => userState.value,
+          effect: (value) {
+            if (value is FailureUserState) {
+              GlobalSnackBar.error(value.message);
+            }
           },
-        );
-      },
+        ),
+        rxObserver(
+          () => editUserState.value,
+          effect: (value) {
+            if (value is FailureEditUserState) {
+              GlobalSnackBar.error(value.message);
+            }
+            if (value is SavedUserState) {
+              GlobalSnackBar.success('User saved');
+            }
+          },
+        ),
+      ],
+      child: RxBuilder(
+        builder: (context) {
+          final state = userState.value;
+
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Home Page'),
+            ),
+            body: switch (state) {
+              StartUserState() => const SizedBox(),
+              GettedUserState() => _gettedUsers(state),
+              LoadingUserState() =>
+                const Center(child: CircularProgressIndicator()),
+              FailureUserState() => _failureUserState(state),
+            },
+          );
+        },
+      ),
     );
   }
 }
