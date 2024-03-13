@@ -18,7 +18,7 @@ void main() {
     test('should fetch users from repository and update userState', () async {
       await fetchUsers();
 
-      expect(listUsersState.value, equals(mockRepository.users));
+      expect(userState.value, equals(mockRepository.users));
     });
   });
 
@@ -28,7 +28,7 @@ void main() {
 
       await updateUser(newUser);
 
-      expect(listUsersState.value, contains(newUser));
+      expect(userState.value, contains(newUser));
     });
   });
 
@@ -38,7 +38,7 @@ void main() {
 
       await insertUser(newUser);
 
-      expect(listUsersState.value, contains(newUser));
+      expect(userState.value, contains(newUser));
     });
   });
 
@@ -48,7 +48,7 @@ void main() {
 
       await deleteUser(todoId);
 
-      expect(listUsersState.value.length, equals(4));
+      expect(userState.value.length, equals(4));
     });
   });
 }

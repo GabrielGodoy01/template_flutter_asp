@@ -16,7 +16,6 @@ dependencies:
   http: ^1.2.1
   uno: ^1.1.9
   mockito: ^5.4.4
-  dartz: ^0.10.1
 
 dev_dependencies:
   flutter_test:
