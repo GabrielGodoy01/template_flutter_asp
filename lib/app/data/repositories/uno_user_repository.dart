@@ -19,8 +19,8 @@ class UnoUserRepository implements UserRepository {
   @override
   Future<Either<Failure, Unit>> delete(int id) async {
     try {
-      var response = await _httpService.delete('/user/$id');
-      if (response.statusCode == 200) {
+      Response response = await _httpService.delete('/user/$id');
+      if (response.status == 200) {
         return right(unit);
       }
       throw Exception();
@@ -35,9 +35,8 @@ class UnoUserRepository implements UserRepository {
   Future<Either<Failure, List<UserModel>>> getAll() async {
     try {
       return await _httpService.get('/user').then((response) {
-        if (response.statusCode == 200) {
-          var data = response.data as List;
-          var users = data.map((e) => UserAdapter.fromMap(e)).toList();
+        if (response.status == 200) {
+          var users = response.data.map((e) => UserAdapter.fromMap(e)).toList();
           return right(users);
         }
         throw Exception();
@@ -55,7 +54,7 @@ class UnoUserRepository implements UserRepository {
       return await _httpService
           .post('/user', data: UserAdapter.toMap(model))
           .then((response) {
-        if (response.statusCode == 201) {
+        if (response.status == 201) {
           var data = response.data;
           var user = UserAdapter.fromMap(data);
           return right(user);
@@ -75,7 +74,7 @@ class UnoUserRepository implements UserRepository {
       return await _httpService
           .put('/user/${model.id}', data: UserAdapter.toMap(model))
           .then((response) {
-        if (response.statusCode == 200) {
+        if (response.status == 200) {
           var data = response.data;
           var user = UserAdapter.fromMap(data);
           return right(user);
