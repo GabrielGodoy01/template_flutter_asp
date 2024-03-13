@@ -11,7 +11,7 @@ class MockUserRepository implements UserRepository {
   ];
 
   @override
-  Future<Either<Failure, UserModel>> update(UserModel model) {
+  Future<Either<Failure, UserModel>> update(UserModel model) async {
     for (var i = 0; i < users.length; i++) {
       if (users[i].id == model.id) {
         users.removeWhere((element) => element.id == model.id);
@@ -19,7 +19,7 @@ class MockUserRepository implements UserRepository {
         return Future.value(right(model));
       }
     }
-    return Future.value(left(NoItemsFound(message: '${model.id}')));
+    return left(NoItemsFound(message: '${model.id}'));
   }
 
   @override
@@ -37,6 +37,6 @@ class MockUserRepository implements UserRepository {
   @override
   Future<Either<Failure, UserModel>> insert(UserModel model) async {
     users.add(model);
-    return Future.value(right(model));
+    return right(model);
   }
 }

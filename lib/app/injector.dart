@@ -5,7 +5,6 @@ import 'package:template_flutter_asp/app/interactor/repositories/user_repository
 final injector = AutoInjector();
 
 void registerInstances() {
-  injector.add<UserRepository>(MockUserRepository.new);
-  // injector.add<TodoRepository>(LocalstoreTodoRepository.new);
+  injector.addLazySingleton<UserRepository>(MockUserRepository.new);
   injector.commit();
 }

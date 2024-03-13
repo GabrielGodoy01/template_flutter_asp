@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:template_flutter_asp/app/data/mock_user_repository.dart';
-import 'package:template_flutter_asp/app/helpers/functions/global_snackbar.dart';
 import 'package:template_flutter_asp/app/injector.dart';
 import 'package:template_flutter_asp/app/interactor/actions/user_actions.dart';
 import 'package:template_flutter_asp/app/interactor/atoms/user_atom.dart';
